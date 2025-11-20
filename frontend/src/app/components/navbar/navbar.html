@@ -1,0 +1,19 @@
+<nav>
+    <div class="container">
+        <a routerLink="/" class="brand">CinéTrack</a>
+        <div class="nav-links">
+            <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Accueil</a>
+
+            <ng-container *ngIf="currentUser$ | async; else guestLinks">
+                <a routerLink="/favorites" routerLinkActive="active-link">Favoris</a>
+                <a routerLink="/watchlist" routerLinkActive="active-link">À voir</a>
+                <button (click)="logout()">Déconnexion</button>
+            </ng-container>
+
+            <ng-template #guestLinks>
+                <a routerLink="/login" routerLinkActive="active-link">Connexion</a>
+                <a routerLink="/register" class="btn-register">Inscription</a>
+            </ng-template>
+        </div>
+    </div>
+</nav>

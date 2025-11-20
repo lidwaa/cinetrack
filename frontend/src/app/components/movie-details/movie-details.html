@@ -1,0 +1,20 @@
+<div *ngIf="movie" class="details-container"
+    [style.backgroundImage]="'url(https://image.tmdb.org/t/p/original' + movie.backdrop_path + ')'">
+    <div class="overlay">
+        <div class="content">
+            <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" alt="{{ movie.title }}" class="poster">
+            <div class="info">
+                <h1>{{ movie.title }} <span class="year">({{ movie.release_date | date:'yyyy' }})</span></h1>
+                <p class="tagline">{{ movie.tagline }}</p>
+                <div class="genres">
+                    <span *ngFor="let genre of movie.genres" class="genre-tag">{{ genre.name }}</span>
+                </div>
+                <p class="overview">{{ movie.overview }}</p>
+                <div class="actions" *ngIf="isLoggedIn">
+                    <button (click)="addToList('favorite')" class="btn-action btn-fav">❤️ Favoris</button>
+                    <button (click)="addToList('watchlist')" class="btn-action btn-watch">📺 À voir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

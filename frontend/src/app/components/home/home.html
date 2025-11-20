@@ -1,0 +1,43 @@
+<div class="hero">
+    <h1>Bienvenue sur CinéTrack</h1>
+    <p>Découvrez des millions de films, séries et artistes.</p>
+
+    <div class="search-box">
+        <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onSearch()"
+            placeholder="Rechercher un film, une série...">
+        <button (click)="onSearch()">Rechercher</button>
+    </div>
+
+    <div class="filters-container">
+        <div class="filter-group">
+            <label>Genre</label>
+            <select [(ngModel)]="selectedGenre" (change)="applyFilters()">
+                <option value="">Tous les genres</option>
+                <option *ngFor="let genre of genres" [value]="genre.id">{{ genre.name }}</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Année</label>
+            <select [(ngModel)]="selectedYear" (change)="applyFilters()">
+                <option value="">Toutes les années</option>
+                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Note minimum: {{ minRating }}</label>
+            <input type="range" min="0" max="10" step="1" [(ngModel)]="minRating" (change)="applyFilters()">
+        </div>
+    </div>
+</div>
+
+<div class="movie-grid">
+    <div *ngFor="let movie of popularMovies" class="movie-card" [routerLink]="['/movie', movie.id]">
+        <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" alt="{{ movie.title }}">
+        <div class="movie-info">
+            <h3>{{ movie.title }}</h3>
+            <p>{{ movie.release_date | date:'yyyy' }}</p>
+        </div>
+    </div>
+</div>

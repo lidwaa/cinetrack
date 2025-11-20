@@ -1,0 +1,22 @@
+<div class="search-container">
+    <div class="search-bar">
+        <input type="text" [(ngModel)]="query" (keyup.enter)="onSearch()" placeholder="Rechercher un film..."
+            class="search-input">
+        <button (click)="onSearch()" class="search-button">Rechercher</button>
+    </div>
+
+    <div class="movie-grid" *ngIf="results.length > 0">
+        <div *ngFor="let movie of results" class="movie-card" [routerLink]="['/movie', movie.id]">
+            <img [src]="movie.poster_path ? 'https://image.tmdb.org/t/p/w500' + movie.poster_path : 'assets/no-poster.jpg'"
+                alt="{{ movie.title }}">
+            <div class="movie-info">
+                <h3>{{ movie.title }}</h3>
+                <p>{{ movie.release_date | date:'yyyy' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="results.length === 0 && query" class="no-results">
+        <p>Aucun résultat trouvé.</p>
+    </div>
+</div>
