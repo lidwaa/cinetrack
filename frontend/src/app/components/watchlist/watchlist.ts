@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
+import { FirestoreService } from '../../services/firestore.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -13,16 +13,16 @@ import { RouterLink } from '@angular/router';
 export class Watchlist implements OnInit {
   watchlist: any[] = [];
 
-  constructor(private userService: UserService) { }
+  constructor(private firestoreService: FirestoreService) { }
 
   ngOnInit() {
-    this.userService.getLists().subscribe(lists => {
-      this.watchlist = lists.filter(l => l.type === 'watchlist').map(l => l.movieData);
+    this.firestoreService.getWatchlist().subscribe(watchlist => {
+      this.watchlist = watchlist;
     });
   }
 
   remove(movieId: number) {
-    this.userService.removeFromList(movieId, 'watchlist').subscribe(() => {
+    this.firestoreService.removeFromWatchlist(movieId).subscribe(() => {
       this.watchlist = this.watchlist.filter(m => m.id !== movieId);
     });
   }

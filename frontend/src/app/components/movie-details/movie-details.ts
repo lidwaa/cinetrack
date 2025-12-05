@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TmdbService } from '../../services/tmdb.service';
-import { UserService } from '../../services/user.service';
+import { FirestoreService } from '../../services/firestore.service';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 
@@ -19,7 +19,7 @@ export class MovieDetails implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private tmdbService: TmdbService,
-    private userService: UserService,
+    private firestoreService: FirestoreService,
     private authService: AuthService
   ) { }
 
@@ -41,9 +41,13 @@ export class MovieDetails implements OnInit {
       return;
     }
 
-    this.userService.addToList(this.movie.id, type, this.movie).subscribe({
+    const observable = type === 'favorite'
+      ? this.firestoreService.addToFavorites(this.movie)
+      : this.firestoreService.addToWatchlist(this.movie);
+
+    observable.subscribe({
       next: () => alert('Ajouté avec succès !'),
-      error: (err) => alert(err.error.message || 'Erreur lors de l\'ajout')
+      error: (err) => alert('Erreur lors de l\'ajout')
     });
   }
 }

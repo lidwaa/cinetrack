@@ -32,10 +32,28 @@ export class Register {
 
     this.authService.register(this.registerForm.value).subscribe({
       next: () => {
-        this.router.navigate(['/login']);
+        // After successful registration, user is automatically logged in
+        this.router.navigate(['/']);
       },
-      error: err => {
-        this.error = err.error.message || 'Registration failed';
+      error: (err: any) => {
+        // Handle Firebase auth errors
+        if (err.code) {
+          switch (err.code) {
+            case 'auth/email-already-in-use':
+              this.error = 'Cet email est déjà utilisé';
+              break;
+            case 'auth/weak-password':
+              this.error = 'Le mot de passe doit contenir au moins 6 caractères';
+              break;
+            case 'auth/invalid-email':
+              this.error = 'Email invalide';
+              break;
+            default:
+              this.error = 'Erreur lors de l\'inscription. Veuillez réessayer';
+          }
+        } else {
+          this.error = err.message || 'Registration failed';
+        }
       }
     });
   }

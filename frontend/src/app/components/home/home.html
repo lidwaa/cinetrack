@@ -31,7 +31,6 @@
         </div>
     </div>
 </div>
-
 <div class="movie-grid">
     <div *ngFor="let movie of popularMovies" class="movie-card" [routerLink]="['/movie', movie.id]">
         <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" alt="{{ movie.title }}">
@@ -40,4 +39,4 @@
             <p>{{ movie.release_date | date:'yyyy' }}</p>
         </div>
     </div>
-</div>
+</div> 

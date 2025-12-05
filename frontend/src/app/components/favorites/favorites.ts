@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
+import { FirestoreService } from '../../services/firestore.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -13,16 +13,16 @@ import { RouterLink } from '@angular/router';
 export class Favorites implements OnInit {
   favorites: any[] = [];
 
-  constructor(private userService: UserService) { }
+  constructor(private firestoreService: FirestoreService) { }
 
   ngOnInit() {
-    this.userService.getLists().subscribe(lists => {
-      this.favorites = lists.filter(l => l.type === 'favorite').map(l => l.movieData);
+    this.firestoreService.getFavorites().subscribe(favorites => {
+      this.favorites = favorites;
     });
   }
 
   remove(movieId: number) {
-    this.userService.removeFromList(movieId, 'favorite').subscribe(() => {
+    this.firestoreService.removeFromFavorites(movieId).subscribe(() => {
       this.favorites = this.favorites.filter(m => m.id !== movieId);
     });
   }

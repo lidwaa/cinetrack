@@ -33,8 +33,24 @@ export class Login {
       next: () => {
         this.router.navigate(['/']);
       },
-      error: err => {
-        this.error = err.error.message || 'Login failed';
+      error: (err: any) => {
+        // Handle Firebase auth errors
+        if (err.code) {
+          switch (err.code) {
+            case 'auth/user-not-found':
+            case 'auth/wrong-password':
+            case 'auth/invalid-credential':
+              this.error = 'Email ou mot de passe incorrect';
+              break;
+            case 'auth/too-many-requests':
+              this.error = 'Trop de tentatives. Réessayez plus tard';
+              break;
+            default:
+              this.error = 'Erreur de connexion. Veuillez réessayer';
+          }
+        } else {
+          this.error = err.message || 'Login failed';
+        }
       }
     });
   }
